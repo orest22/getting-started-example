@@ -1,4 +1,4 @@
-import React from 'react';
+import { sum } from 'header';
 test('example spec', () => {
-    expect(true).toBe(true);
+  expect(sum(2, 2)).toBe(4);
 });
