@@ -5,7 +5,7 @@ export default function Index() {
   return (
     <>
       <Header />
-      <div>New Content!</div>
+      <div>New Content 111!</div>
       <Footer />
     </>
   );
