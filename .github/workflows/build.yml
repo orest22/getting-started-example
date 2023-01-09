@@ -8,8 +8,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Build
+  test:
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
@@ -33,9 +33,38 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules/.cache/nx
-          key: ${{ runner.os }}-nx
+          key: ${{ github.ref }}-nx
 
       - run: ls -la
 
       - name: Test
         run: npm run test
+
+  build:
+    name: Build
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup node from NVM
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Nx
+        id: cache-nx
+        uses: actions/cache@v3
+        with:
+          path: node_modules/.cache/nx
+          key: ${{ github.ref }}-nx
+
+      - name: Build
+        run: npm run build
