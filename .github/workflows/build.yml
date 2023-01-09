@@ -24,10 +24,18 @@ jobs:
           cache: 'npm'
 
       - run: ls -la
-      - run: ls -la ./node_modules/.cache
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Cache Nx
+        id: cache-nx
+        uses: actions/cache@v3
+        with:
+          path: node_modules/.cache/nx
+          key: ${{ runner.os }}-nx
+
+      - run: ls -la
 
       - name: Test
         run: npm run test
